@@ -2,7 +2,11 @@
 
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="index.css">
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="./css/index.css">
+		
+		<script src="./js/jquery-3.3.1.min.js"/>
+		<script src="./js/bootstrap.min.js"/>
     </head>
     <body>
         <div class="container">
@@ -29,5 +33,28 @@
 
         </div>
     </body>
+	
+	<script>
+		
+		$(function () { 
+		$.ajax({
+                url: "http://www.sabalapeople.nctu.me:38080/SabalaApi/wendyApi/test",   //存取Json的網址             
+                type: "GET",
+                cache:false,
+				crossDomain: true,
+                //dataType: 'json',
+                data:{},
+                //contentType: "application/json",
+                success: function (data) {
+					alert(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+	 });
+	
+	</script>
 
 </html>
