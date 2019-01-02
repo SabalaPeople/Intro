@@ -36,7 +36,17 @@
     </body>
 	
 	<script type="text/javascript">
-	
+		$.ajax({
+			url: 'https://sabalapeople.tk:48080/SabalaApi/testApi',
+			type: 'GET',
+			data: {},
+			error: function(xhr) {
+			  console.log('Ajax request 發生錯誤');
+			},
+			success: function(res) {
+				console.log(res);
+			}
+		});
 	</script>
 
 </html>
