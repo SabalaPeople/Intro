@@ -1,52 +1,81 @@
 <!DOCTYPE html>
-<html>
-
-    <head>
-        <meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="./css/index.css">
-		
-		<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
-		<script type="text/javascript" src="./js/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <div class="container">
-
-            <div class="marqee">
-                <ul>
-                    <li>歡迎來到薩巴拉皮啵的個人頁面。</li>
-                    <li>Welcome to profile of SabalaPeople.</li>
-                </ul>
-            </div>
-            <div>
-                <div class="center">
-                    <img src="sabalapeople.png"/>
-                </div>
-                
-                <div class="center text-white">
-                    嗨，我是薩巴拉皮啵，這是我的個人頁面！！
-                </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./reset.css">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: url(./background.jpg);
+        }
+        .header{
+            display: flex;
+            padding: 6px 10px;
+            text-align: center;
+            background-color: #fad;
+            position: sticky;
+            top: 0;
+        }
+        .header .logo{
+            display: inline-block;
+            padding: 5px 0;
+        }
+        .header .logo img{
+            width: 50px;
+            height: 45px;
+        }
+        .header nav{
+            font-size: 0;
+            width: 100%;
+        }
+        .header nav a{
+            font-size: 16px;
+            color: #000;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 52px;
+            padding: 0 10px;
+        }
+        .header nav a:hover{
+            background-color: aquamarine;
+        }
+        .main{
+            font-size: 0;
+            padding: 0 20px;
+        }
+        .main .title{
+            font-size: 72px;
+            line-height: 250px;
+            text-align: left;
+            padding: 5px 20px;
+        }
+        .main .content{
+            font-size: 20px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
     
-                <div class="center text-white">
-                    Hi, I'm Sabalapeople, this is my profile！！
-                </div>
-            </div>
+    <div class="header">
+        <a href="./index2.html" class="logo"><img src="./sabalapeople.png" alt=""></a>
+        <nav>
+            <a href="#">關於我</a>
+            <a href="#">個人經歷</a>
+            <a href="#">個人作品</a>
+            <a href="#">聯絡方式</a>
+        </nav>
+    </div>
 
+    <div class="main">
+        <div class="title">
+            你點進來就會後悔的地方
         </div>
-    </body>
-	
-	<script type="text/javascript">
-		$.ajax({
-			url: 'https://sabalapeople.tk:48080/SabalaApi/testApi',
-			type: 'GET',
-			data: {},
-			error: function(xhr) {
-			  console.log('Ajax request 發生錯誤');
-			},
-			success: function(res) {
-				console.log(res);
-			}
-		});
-	</script>
+        <div class="content">
+            <p>平安喜樂</p>
+        </div>
+    </div>
 
+</body>
 </html>
