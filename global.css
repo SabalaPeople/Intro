@@ -3,7 +3,7 @@ body{
     font-family: 'cwtexyen';
     /*font-family: 'Noto Sans TC', sans-serif;*/
 }
-.header{
+header{
     display: flex;
     padding: 6px 10px;
     text-align: center;
@@ -11,19 +11,19 @@ body{
     position: sticky;
     top: 0;
 }
-.header .logo{
+header .logo{
     display: inline-block;
     padding: 5px 0;
 }
-.header .logo img{
+header .logo img{
     width: 50px;
     height: 45px;
 }
-.header nav{
+header nav{
     font-size: 0;
     width: 100%;
 }
-.header nav a{
+header nav a{
     font-size: 25px;
     color: #000;
     text-decoration: none;
@@ -31,6 +31,6 @@ body{
     line-height: 52px;
     padding: 0 10px;
 }
-.header nav a:hover{
+header nav a:hover{
     background-color: aquamarine;
 }

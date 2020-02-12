@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+		body{
+			background-image: url(./wall.png);
+		}
+	</style>
+  </head>
+  <body>
+
+      <canvas id="canvas" width="1200" height="720" style="border:1px solid #000000;"></canvas>
+  </body>
+  <script>
+	var gameover = undefined;
+  	var Monster = {
+  		location : {
+  			x : 0,
+  			y : 0
+  		},
+  		monster_image : 'monster.png',
+  		monster : null,
+  		init : function(){
+  			this.monster = new Image();
+  			this.monster.src = this.monster_image;
+  		},
+  		getMonster : function () {
+  			this.init();
+  			return this.monster;
+  		},
+  		setLocation : function (x, y){
+  			this.location.x = x;
+  			this.location.y = y;
+  		},
+  		getX : function(){
+  			return this.location.x;
+  		},
+  		getY : function(){
+  			return this.location.y;
+  		},
+  		moveLeft : function(){
+  			this.location.x = this.location.x - 1;
+  		},
+  		moveRight : function(){
+  			this.location.x = this.location.x + 1;
+  		},
+  		moveUp : function (){
+  			this.location.y = this.location.y - 1;
+  		},
+  		moveDown : function(){
+  			this.location.y = this.location.y + 1;
+  		}
+  	}
+  
+  	var Player = {
+  		location : {
+  			x : 0,
+  			y : 0
+  		},
+  		warrior_image : 'role.png',
+  		warrior : null,
+  		init : function () {
+  			this.warrior = new Image();
+  			this.warrior.src = this.warrior_image;
+  		},
+  		getPlayer : function () {
+  			this.init();
+  			return this.warrior;
+  		},
+  		setLocation : function(x, y){
+  			this.location.x = x;
+  			this.location.y = y;
+  		},
+  		getX : function(){
+  			return this.location.x;
+  		},
+  		getY : function(){
+  			return this.location.y;
+  		},
+  		moveLeft : function(){
+  			this.location.x = this.location.x - 1;
+  		},
+  		moveRight : function(){
+  			this.location.x = this.location.x + 1;
+  		},
+  		moveUp : function(){
+  			this.location.y = this.location.y - 1;
+  		},
+  		moveDown : function(){
+  			this.location.y = this.location.y + 1;
+  		}
+  	}
+  	
+  	var Obstacle = {
+  		obstacle_image : 'wall.png',
+  		obstacle : null,
+  		init : function () {
+  			this.obstacle = new Image();
+  			this.obstacle.src = this.obstacle_image;
+  		},
+  		getObstacle : function () {
+  			this.init();
+  			return this.obstacle;
+  		}
+  	}
+  	
+  	var MapMaker = {
+  		map : [],
+		canvas : null,
+		context : null,
+		setMap : function (mapArray) {
+			this.map = mapArray;
+			this.refreshMap();
+		},
+		init : function(canvasId){
+			this.canvas = document.getElementById(canvasId);
+			this.context = this.canvas.getContext('2d');
+			
+			this.context.fillStyle = '#000000';
+			this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+			
+		},
+		refreshMap : function (){
+			var isAlive = false;
+			var result = true;
+			this.init('canvas');
+			for(var i = 0 ; i < this.map.length ; i++){
+				for(var j = 0 ; j < this.map[i].length ; j++){
+					if(this.map[i][j] === 1){
+						this.context.drawImage(
+								Obstacle.getObstacle(), 
+								j * Obstacle.getObstacle().width, 
+								i * Obstacle.getObstacle().height, 
+								Obstacle.getObstacle().width, 
+								Obstacle.getObstacle().height);
+					} else if (this.map[i][j] === 2){
+						isAlive = true;
+						Player.setLocation(j, i);
+						this.context.drawImage(
+								Player.getPlayer(), 
+								j * Obstacle.getObstacle().width, 
+								i * Obstacle.getObstacle().height,
+								Obstacle.getObstacle().width, 
+								Obstacle.getObstacle().height);
+					} else if (this.map[i][j] === 3){
+						Monster.setLocation(j, i);
+						this.context.drawImage(
+								Monster.getMonster(),
+								j * Obstacle.getObstacle().width, 
+								i * Obstacle.getObstacle().height,
+								Obstacle.getObstacle().width, 
+								Obstacle.getObstacle().height);
+					} else if (this.map[i][j] === 4){
+						result = false;
+					}
+				}
+			}
+			
+			if(!isAlive){
+				alert("你葛闢了!!");
+				clearInterval(gameover);
+				window.location.reload();
+			}
+			
+			if(result){
+				alert("過關!!");
+				clearInterval(gameover);
+				window.location.reload();
+			}
+			
+		}
+  	};
+  	
+  	var PlayerEventController = {
+  		isAbleToWalk : function(x, y){
+  			if(MapMaker.map[y][x] === 0){
+  				return true;
+  			} else if(MapMaker.map[y][x] === 4){
+  				return true;
+  			} else {
+  				return false;
+  			}
+  		},
+  		doLeft : function(){
+  			if(this.isAbleToWalk(Player.getX() - 1, Player.getY())){
+  				MapMaker.map[Player.location.y][Player.location.x] = 0;
+  	  			Player.moveLeft();
+  	  			MapMaker.map[Player.location.y][Player.location.x] = 2;
+  			}
+  		},
+  		doRight : function(){
+  			if(this.isAbleToWalk(Player.getX() + 1, Player.getY())){
+	  			MapMaker.map[Player.location.y][Player.location.x] = 0;
+	  			Player.moveRight();
+	  			MapMaker.map[Player.location.y][Player.location.x] = 2;
+  			}
+  		},
+  		doUp : function(){
+  			if(this.isAbleToWalk(Player.getX(), Player.getY() - 1)){
+	  			MapMaker.map[Player.location.y][Player.location.x] = 0;
+	  			Player.moveUp();
+	  			MapMaker.map[Player.location.y][Player.location.x] = 2;
+  			}
+  		},
+  		doDown : function(){
+  			if(this.isAbleToWalk(Player.getX(), Player.getY() + 1)){
+	  			MapMaker.map[Player.location.y][Player.location.x] = 0;
+	  			Player.moveDown();
+	  			MapMaker.map[Player.location.y][Player.location.x] = 2;
+  			}
+  		},
+  		move : function(e){
+  			switch(e.keyCode) {
+  			case 37:
+  				PlayerEventController.doLeft();
+  				break;
+  			case 38:
+  				PlayerEventController.doUp();
+  				break;
+  			case 39:
+  				PlayerEventController.doRight();
+  				break;
+  			case 40:
+  				PlayerEventController.doDown();
+  				break;
+  			} 			
+  			MapMaker.refreshMap();
+  		}
+  	}
+  	
+  	var MonsterEventController = {
+		isAbleToWalk : function(x, y){
+  			if(MapMaker.map[y][x] === 0){
+  				return true;
+  			} else if(MapMaker.map[y][x] === 2){
+  				return true;
+  			} else {
+  				return false;
+  			}
+  		},
+  		doLeft : function(){
+  			if(this.isAbleToWalk(Monster.getX() - 1, Monster.getY())){
+  				MapMaker.map[Monster.location.y][Monster.location.x] = 0;
+  				Monster.moveLeft();
+  	  			MapMaker.map[Monster.location.y][Monster.location.x] = 3;
+  			}
+  		},
+  		doRight : function(){
+  			if(this.isAbleToWalk(Monster.getX() + 1, Monster.getY())){
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 0;
+	  			Monster.moveRight();
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 3;
+  			}
+  		},
+  		doUp : function(){
+  			if(this.isAbleToWalk(Monster.getX(), Monster.getY() - 1)){
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 0;
+	  			Monster.moveUp();
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 3;
+  			}
+  		},
+  		doDown : function(){
+  			if(this.isAbleToWalk(Monster.getX(), Monster.getY() + 1)){
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 0;
+	  			Monster.moveDown();
+	  			MapMaker.map[Monster.location.y][Monster.location.x] = 3;
+  			}
+  		}
+  	};
+  	
+  	
+  	
+  	
+  	window.onload = function() {
+  		var map = [
+  			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,4],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  		];
+  		MapMaker.setMap(map);
+  		
+  		document.onkeyup = PlayerEventController.move;
+  		
+  		gameover = setInterval(function(){
+			var x = Math.abs(Monster.getX() - Player.getX());
+			var y = Math.abs(Monster.getY() - Player.getY());
+			if(x > y){
+				if(Monster.getX() > Player.getX()){
+					MonsterEventController.doLeft();
+				} else {
+					MonsterEventController.doRight();
+				}
+			} else {
+				if(Monster.getY() > Player.getY()){
+					MonsterEventController.doUp();
+				} else {
+					MonsterEventController.doDown();
+				}
+			}
+			MapMaker.refreshMap();
+		}, 115);
+  	}
+  	
+  	
+	
+  		
+  </script>
+</html>
